@@ -3,7 +3,6 @@ import struct
 
 host = '127.0.0.1'  # Server IP address
 port = 5432 # Server port
-
 def create_request(filename):
     operation_type = b'\x01'
     filename_length = struct.pack('!B', len(filename))
@@ -56,10 +55,10 @@ def send_request(request):
 # Example usage:
 if __name__ == "__main__":
     #notes: file handles should be in bytes
-    create_request_data = create_request('bench.txt')
+    create_request_data = create_request('bike.txt')
     response = send_request(create_request_data)
     print(response)
-    fh = b"bench.txt"
+    fh = b"bike.txt"
     request_data = remove_request(fh)
     response = send_request(request_data)
     print(response)
