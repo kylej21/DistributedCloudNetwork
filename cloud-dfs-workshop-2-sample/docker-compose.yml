@@ -1,0 +1,55 @@
+version: "3"
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 1234:1234
+    volumes:
+      - ./server:/app/server
+    command: nodemon --watch /app/server --ext py --exec python /app/server/server.py
+    tty: true
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: fsmap
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./mysql/init/:/docker-entrypoint-initdb.d/
+    ports:
+      - 3306:3306
+    tty: true
+  worker1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 1235:1235
+    volumes:
+      - ./worker:/app/worker
+    command: nodemon --watch /app/worker --ext py --exec python /app/worker/worker.py 1235
+    tty: true
+  worker2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 1236:1236
+    volumes:
+      - ./worker:/app/worker
+    command: nodemon --watch /app/worker --ext py --exec python /app/worker/worker.py 1236
+    tty: true
+  worker3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 1237:1237
+    volumes:
+      - ./worker:/app/worker
+    command: nodemon --watch /app/worker --ext py --exec python /app/worker/worker.py 1237
+    tty: true
